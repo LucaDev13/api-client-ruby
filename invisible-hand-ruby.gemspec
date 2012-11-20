@@ -16,5 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = InvisibleHand::VERSION
 
   # Dependencies
-  gem.add_dependency("rest_client")
+  gem.add_dependency("rest-client")
 end
