@@ -53,9 +53,14 @@ api.products({
 #     https://developer.getinvisiblehand.com/documentation
 
 # Do a live price search on a product (price comes back as the currency in the
-URL you specify. On amazon.com you get dollars, amazon.co.uk you get pounds.)
+# URL you specify. On amazon.com you get dollars, amazon.co.uk you get pounds.)
 api.live_search "http://www.amazon.com/gp/product/B005SUHRZS"
 #=> 11.25
+
+# You can also specify an Invisible Hand API link to the live_search method and
+# it will work fine.
+api.live_search
+"http://api.invisiblehand.co.uk/v1/pages/live_price?url=http%3A%2F%2Fwww.amazon.com%2Fgp%2Fproduct%2FB007PRHNHO"
 
 # Search for a specific product by its Invisible Hand ID
 api.product "f619c3e117d50d1a2b10930e5b202336"
