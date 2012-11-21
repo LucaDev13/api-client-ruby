@@ -64,7 +64,7 @@ api.live_search "http://api.invisiblehand.co.uk/v1/pages/live_price?url=http%3A%
 # Search for a specific product by its Invisible Hand ID
 api.product "f619c3e117d50d1a2b10930e5b202336"
 #=> A hash containing details of this item. More info at:
-      https://developer.getinvisiblehand.com/documentation
+#     https://developer.getinvisiblehand.com/documentation
 
 ```
 
