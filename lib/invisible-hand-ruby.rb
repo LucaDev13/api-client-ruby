@@ -4,6 +4,7 @@ $LOAD_PATH << libdir unless $LOAD_PATH.include? libdir
 require "invisible-hand-ruby/version"
 require "invisible-hand-ruby/logger"
 require "invisible-hand-ruby/api"
+require "invisible-hand-ruby/errors"
 
 require 'cgi'
 require 'rest_client'
