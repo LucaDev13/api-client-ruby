@@ -1,6 +1,7 @@
-# Invisible::Hand::Ruby
+# Invisible Hand Ruby
 
-TODO: Write a gem description
+A Ruby client library to the Invisible Hand API. Allows for very easy
+programmatic access to the Invisible Hand API from Ruby.
 
 ## Installation
 
@@ -24,8 +25,8 @@ should look like. The gem will look for the config in the following locations in
 the following order:
 
     - The path or Hash sent to the constructor
-    - An ENV variable called INVISIBLE\_HAND\_CONFIG
-    - The current working directory at: ./invisible\_hand.yml
+    - An ENV variable called INVISIBLE_HAND_CONFIG
+    - The current working directory at: ./invisible_hand.yml
 
 Some example usage:
 
