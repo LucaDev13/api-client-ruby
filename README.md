@@ -52,6 +52,18 @@ api.products({
 #=> A massive hash that you can find details of at:
 #     https://developer.getinvisiblehand.com/documentation
 
+# Search for products in a different region with a load of other relevant
+# options
+api.products({
+  :query => "galaxy",    # Search term
+  :region => "ca",       # Which region to query
+  :sort => "popularity", # What to order results by
+  :order => "desc",      # Direction to order results by
+  :size => "100"         # Number of results to return
+})
+#=> A massive hash that you can find details of at:
+#     https://developer.getinvisiblehand.com/documentation
+
 # Do a live price search on a product (price comes back as the currency in the
 # URL you specify. On amazon.com you get dollars, amazon.co.uk you get pounds.)
 api.live_price "http://www.amazon.com/gp/product/B005SUHRZS"
