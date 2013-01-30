@@ -3,9 +3,6 @@ module InvisibleHand
     include Logger
     attr_accessor :config
     PROTOCOL = "https://"
-    VALID_REGIONS = [
-      "uk", "us", "de", "ca"
-    ]
 
     def initialize conf = nil
       if conf.is_a? Hash
@@ -33,9 +30,6 @@ module InvisibleHand
 
     def live_price url, opts = {}
       if url =~ /http:\/\/api\.invisiblehand/
-        # Don't need the region to be in there
-        opts.delete :region
-
         url += url_params_from opts
         json = api_raw_request :get, url
         json["price"]
@@ -47,13 +41,7 @@ module InvisibleHand
     end
 
     def api_call method, path, opts = {}
-      opts = @config.merge opts
-
-      unless VALID_REGIONS.include? region
-        raise Error::InvalidConfig.new "Region #{region} is not a valid " +
-          "region. Choose one of the following: #{VALID_REGIONS.join(', ')}"
-      end
-
+      opts     = @config.merge opts
       endpoint = @config[:endpoint] || "api.invisiblehand.co.uk"
       query    = url_params_from opts
       url      = "#{PROTOCOL}#{endpoint}#{path}?#{query}"
