@@ -2,7 +2,6 @@ module InvisibleHand
   class API
     include Logger
     attr_accessor :config
-    PROTOCOL = "https://"
 
     def initialize conf = nil
       if conf.is_a? Hash
@@ -18,6 +17,9 @@ module InvisibleHand
         throw "Your config does not contain an app_id and app_key." +
               "Both are required to make API calls."
       end
+
+      @config[:protocol] = @config[:use_ssl] ? "https://" : "http://"
+      @config[:endpoint] ||= "us.api.invisiblehand.co.uk"
     end
 
     def products opts = {}
@@ -42,9 +44,8 @@ module InvisibleHand
 
     def api_call method, path, opts = {}
       opts     = @config.merge opts
-      endpoint = @config[:endpoint] || "api.invisiblehand.co.uk"
       query    = url_params_from opts
-      url      = "#{PROTOCOL}#{endpoint}#{path}?#{query}"
+      url      = "#{@config[:protocol]}#{@config[:endpoint]}#{path}?#{query}"
 
       api_raw_request method, url
     end
