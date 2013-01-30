@@ -13,8 +13,8 @@ module InvisibleHand
         @config = YAML.load_file(conf || './invisible_hand.yml')
       end
 
-      if @config[:app_id].nil? and @config[:app_key].nil?
-        throw "Your config does not contain an app_id and app_key." +
+      if @config[:app_id].nil? and @config[:app_key].nil? and !@config[:development]
+        throw "Your config does not contain an app_id and app_key. " +
               "Both are required to make API calls."
       end
 
