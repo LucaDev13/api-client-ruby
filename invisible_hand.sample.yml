@@ -1,12 +1,6 @@
 :app_id:  "your app id here"
 :app_key: "your app key here"
 
-# Region can be one of four values: us, uk, de or ca. Which one you choose will
-# determine which API endpoint you will be hitting, which will in turn determine
-# what data the API returns. The value you specify here is a default value that
-# can be overridden if you want to query multiple regions.
-:region:  "us"
-
 # The options in this YAML file will all be sent as default values to the
 # Invisible Hand API. For example, you can specify a default search, as shown
 # below. Potential values for this property and all other properties can be
@@ -17,4 +11,4 @@
 # :sort: "popularity"
 
 # TODO: Document this.
-# :endpoint: api.invisiblehand.co.uk
+# :endpoint: us.api.invisiblehand.co.uk

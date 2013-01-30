@@ -48,7 +48,6 @@ module InvisibleHand
 
     def api_call method, path, opts = {}
       opts = @config.merge opts
-      region = opts.delete(:region) || "us"
 
       unless VALID_REGIONS.include? region
         raise Error::InvalidConfig.new "Region #{region} is not a valid " +
@@ -56,9 +55,8 @@ module InvisibleHand
       end
 
       endpoint = @config[:endpoint] || "api.invisiblehand.co.uk"
-      base_url = "#{region.downcase}.#{endpoint}"
       query    = url_params_from opts
-      url      = "#{PROTOCOL}#{base_url}#{path}?#{query}"
+      url      = "#{PROTOCOL}#{endpoint}#{path}?#{query}"
 
       api_raw_request method, url
     end
