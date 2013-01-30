@@ -55,7 +55,8 @@ module InvisibleHand
           "region. Choose one of the following: #{VALID_REGIONS.join(', ')}"
       end
 
-      base_url = "#{region.downcase}.api.invisiblehand.co.uk"
+      endpoint = @config[:endpoint] || "api.invisiblehand.co.uk"
+      base_url = "#{region.downcase}.#{endpoint}"
       query    = url_params_from opts
       url      = "#{PROTOCOL}#{base_url}#{path}?#{query}"
 
