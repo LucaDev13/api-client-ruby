@@ -9,8 +9,8 @@ module InvisibleHand
       elsif conf.is_a? String
         @config = YAML.load_file(conf)
       else
-        conf ||= ENV['INVISIBLE_HAND_CONFIG']
-        @config = YAML.load_file(conf || './invisible_hand.yml')
+        conf ||= ENV['INVISIBLEHAND_CONFIG']
+        @config = YAML.load_file(conf || './invisiblehand.yml')
       end
 
       if @config[:app_id].nil? and @config[:app_key].nil? and !@config[:development]

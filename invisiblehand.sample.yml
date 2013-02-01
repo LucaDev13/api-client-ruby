@@ -2,7 +2,7 @@
 :app_key: "your app key here"
 
 # The options in this YAML file will all be sent as default values to the
-# Invisible Hand API. For example, you can specify a default search, as shown
+# InvisibleHand API. For example, you can specify a default search, as shown
 # below. Potential values for this property and all other properties can be
 # found in the Invisible Hand API documentation:
 #

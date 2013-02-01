@@ -1,13 +1,13 @@
-# Invisible Hand Ruby
+# InvisibleHand API Client Ruby
 
-A Ruby client library to the Invisible Hand API. Allows for very easy
+A Ruby client library to the InvisibleHand API. Allows for very easy
 programmatic access to the Invisible Hand API from Ruby.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'invisible-hand-ruby', :git => "git@github.com:forward/invisible-hand-ruby.git"
+    gem 'invisiblehand'
 
 And then execute:
 
@@ -25,8 +25,8 @@ should look like. The gem will look for the config in the following locations in
 the following order:
 
     - The path or Hash sent to the constructor
-    - An ENV variable called INVISIBLE_HAND_CONFIG
-    - The current working directory at: ./invisible_hand.yml
+    - An ENV variable called INVISIBLEHAND_CONFIG
+    - The current working directory at: ./invisiblehand.yml
 
 Some example usage:
 
@@ -36,14 +36,14 @@ require 'bundler'
 Bundler.require
 
 # Instantiate the API object using the default config location
-# ./invisible_hand.yml
+# ./invisiblehand.yml
 api = InvisibleHand::API.new
 
 # Instantiate the API object with a hard coded, not-in-file config.
 api = InvisibleHand::API.new :app_id => "id", :app_key => "key"
 
 # Instantiate the API object from a path to a file.
-api = InvisibleHand::API.new "path/to/invisible_hand.yml"
+api = InvisibleHand::API.new "path/to/invisiblehand.yml"
 
 # Search for products that match the query "ipad"
 api.products({
