@@ -54,11 +54,9 @@ api.products({
 #=> A massive hash that you can find details of at:
 #     https://developer.getinvisiblehand.com/documentation
 
-# Search for products in a different region with a load of other relevant
-# options
+# Search for products with sorting and ordering and a specific size.
 api.products({
   :query => "galaxy",    # Search term
-  :region => "ca",       # Which region to query
   :sort => "popularity", # What to order results by
   :order => "desc",      # Direction to order results by
   :size => "100"         # Number of results to return
