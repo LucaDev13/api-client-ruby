@@ -3,7 +3,7 @@ require File.expand_path('../lib/invisiblehand/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Sam Rose"]
-  gem.email         = ["sam.rose@forward.co.uk"]
+  gem.email         = ["developers@getinvisiblehand.com"]
   gem.description   = %q{Ruby API client library to the InvisibleHand API.}
   gem.summary       = %q{Allows for easy programmatic access to the InvisibleHand API.}
   gem.homepage      = ""
