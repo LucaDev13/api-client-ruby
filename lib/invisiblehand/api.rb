@@ -1,24 +1,48 @@
 module InvisibleHand
   class API
-    include Logger
+    include InvisibleHand::Logger
     attr_accessor :config
 
+    # When initializing a new instance of `InvisibleHand::API`, you can specify
+    # configuration in one of three ways:
+    #
+    #   require 'invisiblehand'
+    #
+    #   # This looks first for an environment variable called
+    #   # "INVISIBLEHAND_CONFIG", which should contain a file path to a config
+    #   # YAML file. Failing that, "./invisiblehand.yml" is used, looking for
+    #   # the config YAML file in the current directory.
+    #   api = InvisibleHand::API.new
+    #
+    #   # This one takes a string argument which should be a valid file path to
+    #   # the YAML config file.
+    #   api = InvisibleHand::API.new "path/to/invisiblehand.yml"
+    #
+    #   # Or you can do a literal hash config. This requires no YAML config
+    #   # file.
+    #   api = InvisibleHand::API.new :api_key => "...", :app_id => "..."
+    #
+    # Examples of the configuration variables you can pass in can be found in
+    # the "invisiblehand.sample.yml" file in this gem's GitHub repository.
     def initialize conf = nil
       if conf.is_a? Hash
         @config = conf
       elsif conf.is_a? String
         @config = YAML.load_file(conf)
       else
-        conf ||= ENV['INVISIBLEHAND_CONFIG']
-        @config = YAML.load_file(conf || './invisiblehand.yml')
+        conf ||= ENV['INVISIBLEHAND_CONFIG'] || './invisiblehand.yml'
+        @config = YAML.load_file(conf)
       end
 
-      if @config[:app_id].nil? and @config[:app_key].nil? and !@config[:development]
-        throw "Your config does not contain an app_id and app_key. " +
-              "Both are required to make API calls."
+      # The @config[:development] flag exists to bypass the app_id and app_key
+      # check in this gem (not on the server) for internal testing reasons.
+      if valid_config?
+        raise Error::InvalidConfig.new
+          "Your config does not contain an app_id and app_key. " +
+            "Both are required to make API calls."
       end
 
-      @config[:protocol] = @config[:use_ssl] ? "https://" : "http://"
+      @config[:protocol] = @config[:use_ssl] == false ? "http://" : "https://"
       @config[:endpoint] ||= "us.api.invisiblehand.co.uk"
     end
 
@@ -43,9 +67,8 @@ module InvisibleHand
     end
 
     def api_call method, path, opts = {}
-      opts     = @config.merge opts
-      query    = url_params_from opts
-      url      = "#{@config[:protocol]}#{@config[:endpoint]}#{path}?#{query}"
+      query = url_params_from opts
+      url   = "#{@config[:protocol]}#{@config[:endpoint]}#{path}?#{query}"
 
       api_raw_request method, url
     end
@@ -55,12 +78,19 @@ module InvisibleHand
     def api_raw_request method, url
       logger.debug "API call URL: #{url}"
 
-      response = RestClient.send(method, url) { |resp, req, res| resp }
-      json     = JSON.parse(response.body)
+      # Declare these early to avoid scoping programs in the timing block.
+      response = nil
+      json     = nil
 
-      if json["error"]
-        raise Error::APIError.new json["error"]
+      elapsed = Benchmark.realtime do
+        response = RestClient.send(method, url) { |resp, req, res| resp }
+        json     = JSON.parse(response.body)
       end
+
+      logger.debug "API call took #{elapsed.round(3)} seconds."
+      logger.debug "API json response: #{json.inspect}"
+
+      raise Error::APIError.new(json["error"]) if json["error"]
 
       json
     end
@@ -69,6 +99,12 @@ module InvisibleHand
       hash.map do |key, value|
         "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
       end.join("&")
+    end
+
+    def valid_config?
+      @config[:app_id].nil? and
+        @config[:app_key].nil? and
+        !@config[:development]
     end
   end
 end

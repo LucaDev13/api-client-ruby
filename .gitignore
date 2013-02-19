@@ -1,5 +1,6 @@
 *.gem
 *.rbc
+.rvmrc
 .bundle
 .config
 .yardoc
@@ -16,3 +17,4 @@ test/tmp
 test/version_tmp
 tmp
 invisiblehand.yml
+spec/invisiblehand.yml

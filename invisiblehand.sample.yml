@@ -1,17 +1,11 @@
 :app_id:  "your app id here"
 :app_key: "your app key here"
 
-# The options in this YAML file will all be sent as default values to the
-# InvisibleHand API. For example, you can specify a default search, as shown
-# below. Potential values for this property and all other properties can be
-# found in the Invisible Hand API documentation:
+# The endpoint is the region of the API you would like to hit. The regions are
+# detailed in the developer documentation:
 #
-#   https://developer.getinvisiblehand.com/documentation
+#   https://developer.getinvisiblehand.com/documentation#intro
 #
-# :sort: "popularity"
-
-# TODO: Document this.
+# The option will default to the US if you do not explicitly specify it.
+#
 # :endpoint: us.api.invisiblehand.co.uk
-
-# TODO: Document this.
-# :use_ssl: true

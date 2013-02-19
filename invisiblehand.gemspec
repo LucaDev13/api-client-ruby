@@ -18,4 +18,7 @@ Gem::Specification.new do |gem|
   # Dependencies
   gem.add_dependency('rest-client')
   gem.add_dependency('json')
+
+  gem.add_development_dependency('rake')
+  gem.add_development_dependency('rspec')
 end

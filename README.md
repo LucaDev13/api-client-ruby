@@ -13,6 +13,10 @@ And then execute:
 
     $ bundle
 
+Alternately you can just install directly through the `gem` command:
+
+    $ gem install invisiblehand
+
 ## Usage
 
 The first thing you must do in order to use this gem is create a configuration
@@ -31,9 +35,7 @@ the following order:
 Some example usage:
 
 ``` ruby
-# Assuming you used bundler to install the gem
-require 'bundler'
-Bundler.require
+require 'invisiblehand'
 
 # Instantiate the API object using the default config location
 # ./invisiblehand.yml
@@ -80,8 +82,43 @@ api.product "f619c3e117d50d1a2b10930e5b202336"
 
 ```
 
+### Errors
+
+If the API returns any error information, an `InvisibleHand::Error::APIError` is
+thrown and the `#message` method of the error object will contain the error
+output from the API.
+
+### Logging
+
+The InvisibleHand gem does have debug logging that goes to an internal `Logger`
+object. It should not output anything higher than the debug level, which it does
+when the `DEBUG` environment variable is set.
+
+If you wish to override the default logging object it builds internally, which
+outputs to STDOUT, you can do so with the following code:
+
+``` ruby
+require 'invisiblehand'
+
+# Ignore all InvisibleHand logging.
+InvisibleHand.logger = Logger.new('/dev/null')
+```
+
 ## Debugging
 
 The gem looks for a DEBUG environment variable. If DEBUG is set, debugging
 information will be printed out to the screen. This includes URL information
 every time an API call is made.
+
+## Development
+
+To run tests, first you will need a valid `invisiblehand.yml` config file inside
+the `spec/` directory. The config you specify must be able to make API calls.
+
+Once you have confirmed this, you can run tests with the following command:
+
+    $ rake
+
+And if you wish to see debugging information:
+
+    $ DEBUG=true rake
