@@ -37,9 +37,10 @@ module InvisibleHand
       # The @config[:development] flag exists to bypass the app_id and app_key
       # check in this gem (not on the server) for internal testing reasons.
       if valid_config?
-        raise Error::InvalidConfig.new
-          "Your config does not contain an app_id and app_key. " +
-            "Both are required to make API calls."
+        message = "Your config does not contain an app_id and app_key. " +
+          "Both are required to make API calls."
+
+        raise Error::InvalidConfig.new message, @config
       end
 
       @config[:protocol] = @config[:use_ssl] == false ? "http://" : "https://"
@@ -90,7 +91,7 @@ module InvisibleHand
       logger.debug "API call took #{elapsed.round(3)} seconds."
       logger.debug "API json response: #{json.inspect}"
 
-      raise Error::APIError.new(json["error"]) if json["error"]
+      raise Error::APIError.new(json["error"], url) if json["error"]
 
       json
     end
