@@ -86,6 +86,10 @@ If the API returns any error information, an `InvisibleHand::Error::APIError` is
 thrown and the `#message` method of the error object will contain the error
 output from the API.
 
+The `InvisibleHand::Error::APIError` object also contains `#url` and
+`#raw_response` methods that give you what URL on the API got hit and what the
+raw response from the server was for debugging purposes.
+
 ### Logging
 
 The InvisibleHand gem does have debug logging that goes to an internal `Logger`
@@ -107,6 +111,19 @@ InvisibleHand.logger = Logger.new('/dev/null')
 The gem looks for a DEBUG environment variable. If DEBUG is set, debugging
 information will be printed out to the screen. This includes URL information
 every time an API call is made.
+
+Alternately, if you want to do ad-hoc debugging on single API calls you can pass
+in a debugging option:
+
+``` ruby
+require 'invisiblehand'
+
+api = InvisibleHand::API.new :app_id => "id", :app_key => "key"
+
+api.products query: "nickelback", debug: true
+#=> Result is the same as normal, you'll just get verbose debugging output to
+#   the gem's internal logger (which you can override, see Logging above).
+```
 
 ## Development
 
