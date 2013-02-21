@@ -11,12 +11,13 @@ module InvisibleHand
     end
 
     class APIError < StandardError
-      attr_accessor :url
+      attr_accessor :url, :raw_response
 
-      def initialize message, url
+      def initialize message, url, raw_response
         super message
 
-        @url = url
+        @url          = url
+        @raw_response = raw_response
       end
     end
   end

@@ -71,10 +71,22 @@ module InvisibleHand
       query = url_params_from opts
       url   = "#{@config[:protocol]}#{@config[:endpoint]}#{path}?#{query}"
 
-      api_raw_request method, url
+      if opts[:debug]
+        debug { api_raw_request method, url }
+      else
+        api_raw_request method, url
+      end
     end
 
     private
+
+    def debug &block
+      old_log_level = logger.level
+      logger.level  = ::Logger::DEBUG
+      result        = block.call
+      logger.level  = old_log_level
+      result
+    end
 
     def api_raw_request method, url
       logger.debug "API call URL: #{url}"
@@ -91,15 +103,21 @@ module InvisibleHand
       logger.debug "API call took #{elapsed.round(3)} seconds."
       logger.debug "API json response: #{json.inspect}"
 
-      raise Error::APIError.new(json["error"], url) if json["error"]
+      raise Error::APIError.new(json["error"], url, response) if json["error"]
 
       json
     end
 
     def url_params_from hash
-      hash.map do |key, value|
+      params = hash.map do |key, value|
+        # There are some parameters that will be passed to an API call that we
+        # don't want to include in the query string. Filter them out here.
+        next if [:debug].include? key.to_sym
+
         "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
-      end.join("&")
+      end
+
+      params.compact.join('&')
     end
 
     def valid_config?

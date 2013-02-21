@@ -34,6 +34,14 @@ describe InvisibleHand::API do
     end
   end
 
+  describe "ad-hoc debug flag" do
+    specify "the debug option to a single call should not break things" do
+      expect do
+        api.live_price(page["original_url"], :debug => true)
+      end.to_not raise_error
+    end
+  end
+
   describe "invalid config" do
     specify "no app_id or api_key should throw error" do
       expect do
@@ -57,6 +65,26 @@ describe InvisibleHand::API do
           api.live_price "not a real url, rofl"
         end.to raise_error InvisibleHand::Error::APIError
       end
+    end
+  end
+
+  describe "errors" do
+    describe InvisibleHand::Error::APIError do
+      subject do
+        error = nil
+
+        begin
+          api.live_price "not a real url"
+        rescue InvisibleHand::Error::APIError => e
+          error = e
+        end
+
+        error
+      end
+
+      its(:url)          { should be_a String }
+      its(:raw_response) { should be_a String }
+      its(:message)      { should be_a String }
     end
   end
 end
