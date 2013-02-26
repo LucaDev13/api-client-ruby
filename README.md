@@ -80,6 +80,18 @@ api.product "f619c3e117d50d1a2b10930e5b202336"
 
 ```
 
+### Region
+
+A little clarification surrounding what the `:region` parameter is for in the
+`invisiblehand.sample.yml` file.
+
+Because product data differs depending on where that product is being sold (for
+example, `amazon.com` and `amazon.co.uk` can differ in price and such), the API
+returns you only the data relevant to the region that you specify.
+
+A product that exists in our dataset and has only pages in the UK will not be
+returned for queries that are done on the US API endpoint.
+
 ### Errors
 
 If the API returns any error information, an `InvisibleHand::Error::APIError` is
