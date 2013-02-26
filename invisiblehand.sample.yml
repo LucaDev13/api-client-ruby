@@ -1,11 +1,11 @@
 :app_id:  "your app id here"
 :app_key: "your app key here"
 
-# The endpoint is the region of the API you would like to hit. The regions are
+# The :region is the region of the API you would like to hit. The regions are
 # detailed in the developer documentation:
 #
 #   https://developer.getinvisiblehand.com/documentation#intro
 #
 # The option will default to the US if you do not explicitly specify it.
 #
-# :endpoint: us.api.invisiblehand.co.uk
+# :region: us

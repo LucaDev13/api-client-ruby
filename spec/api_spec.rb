@@ -5,86 +5,96 @@ describe InvisibleHand::API do
   # yourself if you wish to run tests.
   let(:api_config) { File.join(File.dirname(__FILE__), 'invisiblehand.yml') }
 
-  let(:api)        { InvisibleHand::API.new(api_config) }
-  let(:product)    { api.products["results"].first }
-  let(:product_id) { product["id"] }
-  let(:page)       { product["best_page"] }
+  ["uk", "us", "ca", "de"].each do |region|
+    describe "Region: #{region}" do
+      let :api do
+        conf = YAML.load_file(api_config)
+        conf = conf.merge :region => region
 
-  describe "#products" do
-    subject    { api.products }
-    it         { should be_a Hash }
-    its(:keys) { should include "results" }
-    its(:keys) { should include "info" }
-  end
-
-  describe "#product" do
-    subject { product }
-    it      { should_not be_nil }
-  end
-
-  describe "#live_price" do
-    describe "with live price url" do
-      subject { api.live_price(page["live_price_url"]) }
-      it      { should be_a Float }
-    end
-
-    describe "with vanilla page url" do
-      subject { api.live_price(page["original_url"]) }
-      it      { should be_a Float }
-    end
-  end
-
-  describe "ad-hoc debug flag" do
-    specify "the debug option to a single call should not break things" do
-      expect do
-        api.live_price(page["original_url"], :debug => true)
-      end.to_not raise_error
-    end
-  end
-
-  describe "invalid config" do
-    specify "no app_id or api_key should throw error" do
-      expect do
-        InvisibleHand::API.new
-      end.to raise_error InvisibleHand::Error::InvalidConfig
-    end
-  end
-
-  describe "invalid api calls" do
-    describe "#product" do
-      specify "should throw InvisibleHand::Error::APIError on invalid ID" do
-        expect do
-          api.product "not a real id at all, lol"
-        end.to raise_error InvisibleHand::Error::APIError
+        InvisibleHand::API.new(conf)
       end
-    end
 
-    describe "#live_price" do
-      specify "should throw InvisibleHand::Error::APIError on invalid URL" do
-        expect do
-          api.live_price "not a real url, rofl"
-        end.to raise_error InvisibleHand::Error::APIError
+      let(:product)    { api.products["results"].first }
+      let(:product_id) { product["id"] }
+      let(:page)       { product["best_page"] }
+
+      describe "#products" do
+        subject    { api.products }
+        it         { should be_a Hash }
+        its(:keys) { should include "results" }
+        its(:keys) { should include "info" }
       end
-    end
-  end
 
-  describe "errors" do
-    describe InvisibleHand::Error::APIError do
-      subject do
-        error = nil
+      describe "#product" do
+        subject { product }
+        it      { should_not be_nil }
+      end
 
-        begin
-          api.live_price "not a real url"
-        rescue InvisibleHand::Error::APIError => e
-          error = e
+      describe "#live_price" do
+        describe "with live price url" do
+          subject { api.live_price(page["live_price_url"]) }
+          it      { should be_a Float }
         end
 
-        error
+        describe "with vanilla page url" do
+          subject { api.live_price(page["original_url"]) }
+          it      { should be_a Float }
+        end
       end
 
-      its(:url)          { should be_a String }
-      its(:raw_response) { should be_a String }
-      its(:message)      { should be_a String }
+      describe "ad-hoc debug flag" do
+        specify "the debug option to a single call should not break things" do
+          expect do
+            api.live_price(page["original_url"], :debug => true)
+          end.to_not raise_error
+        end
+      end
+
+      describe "invalid config" do
+        specify "no app_id or api_key should throw error" do
+          expect do
+            InvisibleHand::API.new
+          end.to raise_error InvisibleHand::Error::InvalidConfig
+        end
+      end
+
+      describe "invalid api calls" do
+        describe "#product" do
+          specify "should throw InvisibleHand::Error::APIError on invalid ID" do
+            expect do
+              api.product "not a real id at all, lol"
+            end.to raise_error InvisibleHand::Error::APIError
+          end
+        end
+
+        describe "#live_price" do
+          specify "should throw InvisibleHand::Error::APIError on invalid URL" do
+            expect do
+              api.live_price "not a real url, rofl"
+            end.to raise_error InvisibleHand::Error::APIError
+          end
+        end
+      end
+
+      describe "errors" do
+        describe InvisibleHand::Error::APIError do
+          subject do
+            error = nil
+
+            begin
+              api.live_price "not a real url"
+            rescue InvisibleHand::Error::APIError => e
+              error = e
+            end
+
+            error
+          end
+
+          its(:url)          { should be_a String }
+          its(:raw_response) { should be_a String }
+          its(:message)      { should be_a String }
+        end
+      end
     end
   end
 end

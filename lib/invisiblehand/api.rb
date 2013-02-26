@@ -44,7 +44,6 @@ module InvisibleHand
       end
 
       @config[:protocol] = @config[:use_ssl] == false ? "http://" : "https://"
-      @config[:endpoint] ||= "us.api.invisiblehand.co.uk"
     end
 
     def products opts = {}
@@ -69,7 +68,7 @@ module InvisibleHand
 
     def api_call method, path, opts = {}
       query = url_params_from opts
-      url   = "#{@config[:protocol]}#{@config[:endpoint]}#{path}?#{query}"
+      url   = "#{@config[:protocol]}#{endpoint}#{path}?#{query}"
 
       if opts[:debug]
         debug { api_raw_request method, url }
@@ -79,6 +78,19 @@ module InvisibleHand
     end
 
     private
+
+    # Gets the endpoint of the API to hit. Prioritises the :region config
+    # parameter over :endpoint. In the event that neither are presents, defaults
+    # to the US.
+    def endpoint
+      if @config[:region]
+        "#{@config[:region]}.api.invisiblehand.co.uk"
+      elsif @config[:endpoint]
+        @config[:endpoint]
+      else
+        "us.api.invisiblehand.co.uk"
+      end
+    end
 
     def debug &block
       old_log_level = logger.level
