@@ -36,7 +36,7 @@ module InvisibleHand
 
       # The @config[:development] flag exists to bypass the app_id and app_key
       # check in this gem (not on the server) for internal testing reasons.
-      if valid_config?
+      if invalid_config?
         message = "Your config does not contain an app_id and app_key. " +
           "Both are required to make API calls."
 
@@ -132,10 +132,8 @@ module InvisibleHand
       params.compact.join('&')
     end
 
-    def valid_config?
-      @config[:app_id].nil? and
-        @config[:app_key].nil? and
-        !@config[:development]
+    def invalid_config?
+      (@config[:app_id].nil? or @config[:app_key].nil?) and !@config[:development]
     end
   end
 end
