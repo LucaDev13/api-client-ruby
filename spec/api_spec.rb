@@ -5,6 +5,15 @@ describe InvisibleHand::API do
   # yourself if you wish to run tests.
   let(:api_config) { File.join(File.dirname(__FILE__), 'invisiblehand.yml') }
 
+  before do
+    unless File.exist?(api_config)
+      puts "Your test config file does not exist. It should be at " +
+        "#{api_config}."
+
+      exit 1
+    end
+  end
+
   ["uk", "us", "ca", "de"].each do |region|
     describe "Region: #{region}" do
       let :api do
@@ -14,15 +23,22 @@ describe InvisibleHand::API do
         InvisibleHand::API.new(conf)
       end
 
-      let(:product)    { api.products["results"].first }
-      let(:product_id) { product["id"] }
-      let(:page)       { product["best_page"] }
+      let(:product)    { api.products.results.first }
+      let(:product_id) { product.id }
+      let(:page)       { product.best_page }
 
       describe "#products" do
-        subject    { api.products }
-        it         { should be_a Hash }
-        its(:keys) { should include "results" }
-        its(:keys) { should include "info" }
+        subject       { api.products }
+        it            { should be_a InvisibleHand::Response }
+        its(:results) { should be_a Array }
+        its(:info)    { should be_a Hash }
+      end
+
+      describe "#products :raw => true" do
+        subject       { api.products :raw => true }
+        it            { should be_a Hash }
+        its(:keys)    { should include "results" }
+        its(:keys)    { should include "info" }
       end
 
       describe "#product" do
@@ -32,12 +48,12 @@ describe InvisibleHand::API do
 
       describe "#live_price" do
         describe "with live price url" do
-          subject { api.live_price(page["live_price_url"]) }
+          subject { page.live_price }
           it      { should be_a Float }
         end
 
         describe "with vanilla page url" do
-          subject { api.live_price(page["original_url"]) }
+          subject { api.live_price(page.original_url) }
           it      { should be_a Float }
         end
       end
@@ -45,7 +61,7 @@ describe InvisibleHand::API do
       describe "ad-hoc debug flag" do
         specify "the debug option to a single call should not break things" do
           expect do
-            api.live_price(page["original_url"], :debug => true)
+            api.live_price(page.original_url, :debug => true)
           end.to_not raise_error
         end
       end

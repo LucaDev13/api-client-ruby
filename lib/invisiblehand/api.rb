@@ -44,14 +44,37 @@ module InvisibleHand
       end
 
       @config[:protocol] = @config[:use_ssl] == false ? "http://" : "https://"
+      @config[:version] ||= "1"
     end
 
     def products opts = {}
-      api_call :get, "/v1/products", opts
+      response = api_call :get, "/products", opts
+
+      if opts[:raw]
+        response
+      else
+        Response.new(response, self)
+      end
     end
 
     def product id, opts = {}
-      api_call :get, "/v1/products/#{CGI.escape(id)}", opts
+      response = api_call :get, "/products/#{CGI.escape(id)}", opts
+
+      if opts[:raw]
+        response
+      else
+        Product.new(response, self)
+      end
+    end
+
+    def page url, opts = {}
+      response = api_call :get, "/pages/?url=#{CGI.escape(url)}", opts
+
+      if opts[:raw]
+        response
+      else
+        Page.new(response, self)
+      end
     end
 
     def live_price url, opts = {}
@@ -61,14 +84,21 @@ module InvisibleHand
         json["price"]
       else
         opts[:url] = url
-        json = api_call :get, "/v1/pages/live_price", opts
+        json = api_call :get, "/pages/live_price", opts
         json["price"]
       end
     end
 
     def api_call method, path, opts = {}
+      if !@config[:development]
+        opts.merge!({
+          :app_id => @config[:app_id],
+          :app_key => @config[:app_key],
+        })
+      end
+
       query = url_params_from opts
-      url   = "#{@config[:protocol]}#{endpoint}#{path}?#{query}"
+      url   = "#{@config[:protocol]}#{endpoint}/v#{@config[:version]}#{path}?#{query}"
 
       if opts[:debug]
         debug { api_raw_request method, url }
@@ -96,8 +126,9 @@ module InvisibleHand
       old_log_level = logger.level
       logger.level  = ::Logger::DEBUG
       result        = block.call
-      logger.level  = old_log_level
       result
+    ensure
+      logger.level  = old_log_level
     end
 
     def api_raw_request method, url
@@ -124,7 +155,7 @@ module InvisibleHand
       params = hash.map do |key, value|
         # There are some parameters that will be passed to an API call that we
         # don't want to include in the query string. Filter them out here.
-        next if [:debug].include? key.to_sym
+        next if [:debug, :raw].include? key.to_sym
 
         "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
       end

@@ -51,8 +51,9 @@ api = InvisibleHand::API.new "path/to/invisiblehand.yml"
 api.products({
   :query => "ipad"
 })
-#=> A massive hash that you can find details of at:
-#     https://developer.getinvisiblehand.com/documentation
+#=> An InvisibleHand::Response object that contains the methods #results and
+#   #info. #results is an array of InvisibleHand::Product objects and #info is
+#   a Hash of meta information on the request (number of results, etc.)
 
 # Search for products with sorting and ordering and a specific size.
 api.products({
@@ -61,8 +62,6 @@ api.products({
   :order => "desc",      # Direction to order results by
   :size => "100"         # Number of results to return
 })
-#=> A massive hash that you can find details of at:
-#     https://developer.getinvisiblehand.com/documentation
 
 # Do a live price search on a product (price comes back as the currency in the
 # URL you specify. On amazon.com you get dollars, amazon.co.uk you get pounds.)
@@ -75,8 +74,7 @@ api.live_price "http://api.invisiblehand.co.uk/v1/pages/live_price?url=http%3A%2
 
 # Search for a specific product by its Invisible Hand ID
 api.product "f619c3e117d50d1a2b10930e5b202336"
-#=> A hash containing details of this item. More info at:
-#     https://developer.getinvisiblehand.com/documentation
+#=> An InvisibleHand::Product object.
 
 ```
 
