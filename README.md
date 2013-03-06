@@ -149,7 +149,7 @@ And if you wish to see debugging information:
 
     $ DEBUG=true rake
 
-## Submitting pull requests
+## Contributing
 
 If you have added a feature or fixed a bug and want to share it, please submit
 a pull request as follows:
