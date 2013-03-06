@@ -63,8 +63,9 @@ api.products({
   :size => "100"         # Number of results to return
 })
 
-# Do a live price search on a product (price comes back as the currency in the
-# URL you specify. On amazon.com you get dollars, amazon.co.uk you get pounds.)
+# Do a live price search on a product (price comes back in the currency for the
+# region of the URL you specify, so for example, on amazon.com you get dollars and on
+# amazon.co.uk you get pounds.)
 api.live_price "http://www.amazon.com/gp/product/B005SUHRZS"
 #=> 11.25
 
@@ -84,8 +85,8 @@ A little clarification surrounding what the `:region` parameter is for in the
 `invisiblehand.sample.yml` file.
 
 Because product data differs depending on where that product is being sold (for
-example, `amazon.com` and `amazon.co.uk` can differ in price and such), the API
-returns you only the data relevant to the region that you specify.
+example, `amazon.com` and `amazon.co.uk` differ in currency, price and so on), the
+API returns only the data relevant to the region that you specify.
 
 A product that exists in our dataset and has only pages in the UK will not be
 returned for queries that are done on the US API endpoint.
@@ -147,3 +148,15 @@ Once you have confirmed this, you can run tests with the following command:
 And if you wish to see debugging information:
 
     $ DEBUG=true rake
+
+## Submitting pull requests
+
+If you have added a feature or fixed a bug and want to share it, please submit
+a pull request as follows:
+
+- Fork the project
+- Write the code for your feature or bug fix
+- Add tests - this is important to ensure the code you've added continues to work correctly
+- Make sure the existing tests all pass
+- Commit - do not mess with version, or history
+- Submit a pull request
