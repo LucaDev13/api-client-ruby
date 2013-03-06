@@ -1,7 +1,7 @@
 # InvisibleHand API Client Ruby
 
 A Ruby client library to the InvisibleHand API. Allows for very easy
-programmatic access to the Invisible Hand API from Ruby.
+programmatic access to the InvisibleHand API from Ruby.
 
 ## Installation
 
@@ -68,11 +68,11 @@ api.products({
 api.live_price "http://www.amazon.com/gp/product/B005SUHRZS"
 #=> 11.25
 
-# You can also specify an Invisible Hand API link to the live_price method and
+# You can also specify an InvisibleHand API link to the live_price method and
 # it will work fine.
 api.live_price "http://api.invisiblehand.co.uk/v1/pages/live_price?url=http%3A%2F%2Fwww.amazon.com%2Fgp%2Fproduct%2FB007PRHNHO"
 
-# Search for a specific product by its Invisible Hand ID
+# Search for a specific product by its InvisibleHand ID
 api.product "f619c3e117d50d1a2b10930e5b202336"
 #=> An InvisibleHand::Product object.
 
