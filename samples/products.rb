@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'invisiblehand'
 
-api = InvisibleHand::API.new :app_id => "", :api_key => "", :region => "uk"
+api = InvisibleHand::API.new :app_id => "", :app_key => "", :region => "uk"
 
 begin
   response = api.products(:query => "nickelback", :size => 5)
