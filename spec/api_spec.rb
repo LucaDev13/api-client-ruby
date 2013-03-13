@@ -67,7 +67,7 @@ describe InvisibleHand::API do
       end
 
       describe "invalid config" do
-        specify "no app_id or api_key should throw error" do
+        specify "no app_id or app_key should throw error" do
           expect do
             InvisibleHand::API.new({})
           end.to raise_error InvisibleHand::Error::InvalidConfig

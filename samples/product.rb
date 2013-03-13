@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'invisiblehand'
 
-api = InvisibleHand::API.new :app_id => "", :api_key => "", :region => "uk"
+api = InvisibleHand::API.new :app_id => "", :app_key => "", :region => "uk"
 
 begin
   # The "78b4fb8fa97b8bc746726a32d3393833" bit is a product ID in our database.

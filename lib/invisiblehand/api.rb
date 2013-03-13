@@ -20,7 +20,7 @@ module InvisibleHand
     #
     #   # Or you can do a literal hash config. This requires no YAML config
     #   # file.
-    #   api = InvisibleHand::API.new :api_key => "...", :app_id => "..."
+    #   api = InvisibleHand::API.new :app_key => "...", :app_id => "..."
     #
     # Examples of the configuration variables you can pass in can be found in
     # the "invisiblehand.sample.yml" file in this gem's GitHub repository.
